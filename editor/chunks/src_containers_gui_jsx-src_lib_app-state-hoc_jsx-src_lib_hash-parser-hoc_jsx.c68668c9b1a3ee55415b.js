@@ -45,7 +45,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
+var extensionCount = 0;
+var extensionLocation = "https://bricklife.com/scratch-gui/xcratch/spikeessential.mjs";
 
 const CLOSE_DELAY = 300; // ms
 
@@ -14086,18 +14087,29 @@ class ExtensionLibrary extends react__WEBPACK_IMPORTED_MODULE_1__.PureComponent 
   }
   handleItemSelect(item) {
     let id = item.extensionId;
+    //this.props.vm.extensionManager.fetchExtension("https://bricklife.com/scratch-gui/xcratch/legoluigi.mjs");
+    //this.props.vm.extensionManager.fetchExtension("https://bricklife.com/scratch-gui/xcratch/legomario.mjs");
+    //this.props.vm.extensionManager.fetchExtension("https://bricklife.com/scratch-gui/xcratch/spikeessential.mjs"); '
+    let extensionLocation = "https://bricklife.com/scratch-gui/xcratch/spikeessential.mjs";
+    //if (extensionCount === 1) {
+    //    let extensionLocation = "https://bricklife.com/scratch-gui/xcratch/legoluigi.mjs";
+    //}
+    //extensionCount += 1;
     const url = item.extensionURL ? item.extensionURL : id;
     if (!item.disabled && !id) {
       return (0,_lib_async_modal_jsx__WEBPACK_IMPORTED_MODULE_8__.prompt)({
         message: this.props.intl.formatMessage(messages.extensionUrl),
         valueType: 'url',
-        initialValue: 'https://xcratch.github.io/xcx-example/dist/xcratchExample.mjs'
-      }).then(inputUrl => this.props.vm.extensionManager.fetchExtension(inputUrl).catch(error => {
+        initialValue: 'https://sjcoefablab.org/extensions/legopeach.mjs'
+      }).then(inputUrl => this.props.vm.extensionManager.fetchExtension(extensionLocation).catch(error => {
         _lib_log_js__WEBPACK_IMPORTED_MODULE_4__["default"].error("Error on fetch ".concat(inputUrl, ":\n").concat(error.stack, "\n"));
         (0,_lib_async_modal_jsx__WEBPACK_IMPORTED_MODULE_8__.alert)({
           message: "Could not get extension from:\n".concat(inputUrl)
         });
-      })).then(_ref => {
+      })
+             
+             
+             ).then(_ref => {
         let {
           entry,
           blockClass
@@ -14120,15 +14132,6 @@ class ExtensionLibrary extends react__WEBPACK_IMPORTED_MODULE_1__.PureComponent 
           });
         }
         this.props.vm.extensionManager.registerExtensionBlock(entry, blockClass);
-        this.props.onCategorySelected(id);
-      });
-    }
-    if (id && !item.disabled) {
-      if (this.props.vm.extensionManager.isExtensionLoaded(id)) {
-        this.props.onCategorySelected(id);
-        return Promise.resolve();
-      }
-      return this.props.vm.extensionManager.loadExtensionURL(url).then(() => {
         this.props.onCategorySelected(id);
       });
     }
@@ -25486,8 +25489,8 @@ const translationMap = {
   featured: true,
   disabled: false,
   internetConnectionRequired: true,
-  collaborator: 'Yengawa Lab',
-  helpLink: 'https://xcratch.github.io/',
+  collaborator: 'Lots of Coffee',
+  helpLink: 'htts://sjcoefablab.org/scratch/extensions.html',
   translationMap: translationMap
 });
 

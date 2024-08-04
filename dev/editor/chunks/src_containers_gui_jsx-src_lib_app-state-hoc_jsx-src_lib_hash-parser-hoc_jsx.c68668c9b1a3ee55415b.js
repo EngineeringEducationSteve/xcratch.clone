@@ -25486,8 +25486,8 @@ const translationMap = {
   featured: true,
   disabled: false,
   internetConnectionRequired: true,
-  collaborator: 'Yengawa Lab',
-  helpLink: 'https://xcratch.github.io/',
+  collaborator: 'Lots of Coffee',
+  helpLink: 'https://sjcoefablab.org/scratch/extensions.html',
   translationMap: translationMap
 });
 

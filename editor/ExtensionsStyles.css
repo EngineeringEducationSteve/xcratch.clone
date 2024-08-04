@@ -1,0 +1,38 @@
+body {
+    color: black;
+    font-family: "M PLUS Code Latin", monospace;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+strong {
+  font-family: "Rowdies", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+#titleImage {
+    transform: scale(.5, .5);
+}
+
+#luigi {
+    text-shadow: 2px 2px #00ff00;
+}
+
+#peach {
+    text-shadow: 2px 2px #ffaaaa;
+}
+
+#mario {
+    text-shadow: 2px 2px #ff0000;
+}
+#blue {
+    text-shadow: 2px 2px #4444ff;
+}
+
+#lego {
+    text-shadow: 2px 2px #ffff00;
+}
