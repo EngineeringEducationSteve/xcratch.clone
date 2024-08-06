@@ -25490,7 +25490,7 @@ const translationMap = {
   disabled: false,
   internetConnectionRequired: true,
   collaborator: 'Lots of Coffee',
-  helpLink: 'htts://sjcoefablab.org/scratch/extensions.html',
+  helpLink: 'https://sjcoefablab.org/scratch/extensions.html',
   translationMap: translationMap
 });
 
