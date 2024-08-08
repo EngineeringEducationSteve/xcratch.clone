@@ -14087,10 +14087,11 @@ class ExtensionLibrary extends react__WEBPACK_IMPORTED_MODULE_1__.PureComponent 
   }
   handleItemSelect(item) {
     let id = item.extensionId;
-    //this.props.vm.extensionManager.fetchExtension("https://bricklife.com/scratch-gui/xcratch/legoluigi.mjs");
-    //this.props.vm.extensionManager.fetchExtension("https://bricklife.com/scratch-gui/xcratch/legomario.mjs");
-    //this.props.vm.extensionManager.fetchExtension("https://bricklife.com/scratch-gui/xcratch/spikeessential.mjs"); '
-    let extensionLocation = "https://bricklife.com/scratch-gui/xcratch/spikeessential.mjs";
+    // this.props.vm.extensionManager.fetchExtension("http://127.0.0.1:5500/spikeessential.mjs");
+    // this.props.vm.extensionManager.fetchExtension("http://127.0.0.1:5500/legomario.mjs");
+    // this.props.vm.extensionManager.fetchExtension("http://127.0.0.1:5500/legopeach.mjs");
+    
+    let extensionLocation = "http://127.0.0.1:5500/legopeach.mjs";
     //if (extensionCount === 1) {
     //    let extensionLocation = "https://bricklife.com/scratch-gui/xcratch/legoluigi.mjs";
     //}
@@ -14100,8 +14101,8 @@ class ExtensionLibrary extends react__WEBPACK_IMPORTED_MODULE_1__.PureComponent 
       return (0,_lib_async_modal_jsx__WEBPACK_IMPORTED_MODULE_8__.prompt)({
         message: this.props.intl.formatMessage(messages.extensionUrl),
         valueType: 'url',
-        initialValue: 'https://sjcoefablab.org/extensions/legopeach.mjs'
-      }).then(inputUrl => this.props.vm.extensionManager.fetchExtension(extensionLocation).catch(error => {
+        initialValue: ''
+      }).then(inputUrl => this.props.vm.extensionManager.fetchExtension(inputUrl).catch(error => {
         _lib_log_js__WEBPACK_IMPORTED_MODULE_4__["default"].error("Error on fetch ".concat(inputUrl, ":\n").concat(error.stack, "\n"));
         (0,_lib_async_modal_jsx__WEBPACK_IMPORTED_MODULE_8__.alert)({
           message: "Could not get extension from:\n".concat(inputUrl)
