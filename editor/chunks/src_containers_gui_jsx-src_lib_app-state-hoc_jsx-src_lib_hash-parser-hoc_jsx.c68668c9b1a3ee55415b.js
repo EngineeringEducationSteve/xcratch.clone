@@ -25491,7 +25491,7 @@ const translationMap = {
   disabled: false,
   internetConnectionRequired: true,
   collaborator: 'Lots of Coffee',
-  helpLink: 'https://sjcoefablab.org/scratch/extensions.html',
+  helpLink: 'https://fablablegofiles.vercel.app',
   translationMap: translationMap
 });
 
