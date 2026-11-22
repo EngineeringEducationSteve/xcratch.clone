@@ -1,3 +1,5 @@
+import { LegoWebBluetooth } from './lego-web-bluetooth.mjs';
+
 var global$1 = typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};
 
 // shim for using process in browser
@@ -12068,7 +12070,7 @@ var Hub$1 = /*#__PURE__*/function () {
     key: "scan",
     value: function scan() {
       if (this._ble) {
-        this._ble.disconnect();
+        this.disconnect();
       }
       var hubTypeFilter = {
         dataPrefix: []
@@ -12079,7 +12081,8 @@ var Hub$1 = /*#__PURE__*/function () {
           mask: [0x00, 0xff]
         };
       }
-      this._ble = new BLE(this._runtime, this._extensionId, {
+      var Transport = LegoWebBluetooth.isSupported() ? LegoWebBluetooth : BLE;
+      this._ble = new Transport(this._runtime, this._extensionId, {
         filters: [{
           services: [ServiceUUID],
           manufacturerData: {
@@ -12117,11 +12120,17 @@ var Hub$1 = /*#__PURE__*/function () {
     key: "_onConnect",
     value: function _onConnect() {
       var _this = this;
-      this._ble.startNotifications(ServiceUUID, CharacteristicUUID, this._onMessage);
       this._firstNotificationCallback = function () {
         _this.sendMessage(MessageType.HUB_PROPERTIES, [HubPropertyReference.ADVERTISING_NAME, HubPropertyOperation.ENABLE_UPDATES], false);
         _this.sendMessage(MessageType.HUB_PROPERTIES, [HubPropertyReference.FW_VERSION, HubPropertyOperation.REQUEST_UPDATE]);
       };
+      var transport = this._ble;
+      var notifications = transport.startNotifications(ServiceUUID, CharacteristicUUID, this._onMessage);
+      if (transport instanceof LegoWebBluetooth) {
+        return notifications.then(function () {
+          if (_this._ble === transport && transport.isConnected()) _this._startPollingBatteryLevel();
+        });
+      }
       this._startPollingBatteryLevel();
     }
   }, {
@@ -12278,6 +12287,7 @@ var Hub$1 = /*#__PURE__*/function () {
       this._firmwareVersion = null;
       this._batteryLevel = 0;
       this._devices = [];
+      this._firstNotificationCallback = null;
       this._outputCommandFeedbackCallbacks = [];
       this._outputCommandCompletionCallbacks = [];
       this._stopPollingBatteryLevel();
