@@ -14087,36 +14087,33 @@ class ExtensionLibrary extends react__WEBPACK_IMPORTED_MODULE_1__.PureComponent 
   }
   handleItemSelect(item) {
     let id = item.extensionId;
-    // this.props.vm.extensionManager.fetchExtension("http://127.0.0.1:5500/spikeessential.mjs");
-    // this.props.vm.extensionManager.fetchExtension("http://127.0.0.1:5500/legomario.mjs");
-    // this.props.vm.extensionManager.fetchExtension("http://127.0.0.1:5500/legopeach.mjs");
-    
-    let extensionLocation = "http://127.0.0.1:5500/legopeach.mjs";
-    //if (extensionCount === 1) {
-    //    let extensionLocation = "https://bricklife.com/scratch-gui/xcratch/legoluigi.mjs";
-    //}
-    //extensionCount += 1;
-    const url = item.extensionURL ? item.extensionURL : id;
+    if (id && item.extensionURL && item.launchPeripheralConnectionFlow &&
+        this.props.vm.extensionManager.isExtensionLoaded(id)) {
+      this.props.onCategorySelected(id);
+      return;
+    }
     if (!item.disabled && !id) {
       return (0,_lib_async_modal_jsx__WEBPACK_IMPORTED_MODULE_8__.prompt)({
         message: this.props.intl.formatMessage(messages.extensionUrl),
         valueType: 'url',
         initialValue: ''
-      }).then(inputUrl => this.props.vm.extensionManager.fetchExtension(inputUrl).catch(error => {
+      }).then(inputUrl => inputUrl && this.props.vm.extensionManager.fetchExtension(inputUrl).catch(error => {
         _lib_log_js__WEBPACK_IMPORTED_MODULE_4__["default"].error("Error on fetch ".concat(inputUrl, ":\n").concat(error.stack, "\n"));
         (0,_lib_async_modal_jsx__WEBPACK_IMPORTED_MODULE_8__.alert)({
           message: "Could not get extension from:\n".concat(inputUrl)
         });
-      })
-             
-             
-             ).then(_ref => {
+      })).then(_ref => {
+        if (!_ref) return;
         let {
           entry,
           blockClass
         } = _ref;
         id = entry.extensionId;
         const existingEntry = _lib_libraries_extensions_index_jsx__WEBPACK_IMPORTED_MODULE_5__["default"].find(libEntry => libEntry.extensionId === id);
+        if (existingEntry === entry && this.props.vm.extensionManager.isExtensionLoaded(id)) {
+          this.props.onCategorySelected(id);
+          return;
+        }
         if (existingEntry) {
           // Workaround to avoid official translation process.
           Object.assign(this.props.intl.messages, translations[this.props.intl.locale]);
@@ -25791,24 +25788,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-const importModules = [
-  // import('./extension.mjs') // Example
-];
-
-/**
- * Install extensions from local module files.
- * @param {ExtensionManager} extensionManager - Current extension manager in VM.
- */
-/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(extensionManager) {
-  Promise.all(importModules).then(modules => modules.forEach(module => {
-    if (module) {
-      const {
-        entry,
-        blockClass
-      } = module;
-      extensionManager.addBultinExtension(entry, blockClass);
-    }
-  }));
+// The local extension modules are deployed beside the editor.
+function __WEBPACK_DEFAULT_EXPORT__(extensionManager, preload) {
+  const installerURL = new URL('./lego-extensions.js', document.baseURI).href;
+  return import( /* webpackIgnore: true */installerURL).then(module =>
+    module.installLegoExtensions(extensionManager, preload)
+  ).catch(error => {
+    console.error('Could not initialize the LEGO extensions:', error);
+  });
 }
 
 /***/ }),
@@ -29905,7 +29892,7 @@ const vmManagerHOC = function vmManagerHOC(WrappedComponent) {
         this.props.vm.setLocale(this.props.locale, this.props.messages);
         // To load extension which is used in a project file.
         this.props.vm.extensionManager.extensionLibraryContent = _lib_libraries_extensions_index_jsx__WEBPACK_IMPORTED_MODULE_7__["default"];
-        (0,_libraries_extensions_preInstall_index_js__WEBPACK_IMPORTED_MODULE_8__["default"])(this.props.vm.extensionManager);
+        this.preinstalledExtensions = (0,_libraries_extensions_preInstall_index_js__WEBPACK_IMPORTED_MODULE_8__["default"])(this.props.vm.extensionManager, !this.props.isPlayerOnly);
       }
       if (!this.props.isPlayerOnly && !this.props.isStarted) {
         this.props.vm.start();
@@ -29939,7 +29926,7 @@ const vmManagerHOC = function vmManagerHOC(WrappedComponent) {
       return Promise.resolve(this.props.projectData);
     }
     loadProject() {
-      return this.getProjectData().then(projectData => {
+      return Promise.all([this.getProjectData(), this.preinstalledExtensions]).then(([projectData]) => {
         this.props.vm.loadProject(projectData).then(() => {
           this.props.onLoadedProject(this.props.loadingState, this.props.canSave);
           // Wrap in a setTimeout because skin loading in

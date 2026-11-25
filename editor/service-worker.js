@@ -78,6 +78,27 @@ define(['./workbox-74854057'], (function (workbox) { 'use strict';
    * See https://goo.gl/S9QRab
    */
   workbox.precacheAndRoute([{
+    "url": "lego-extensions.js",
+    "revision": "ef64f65f5003b9177b8bf43d40f26766"
+  }, {
+    "url": "../extensions/lego-web-bluetooth.js",
+    "revision": "83bdd1fcfbba4ca36da826dac29775f5"
+  }, {
+    "url": "../extensions/legoble.js",
+    "revision": "872b8a443a15c955b121edbc9b2de9a3"
+  }, {
+    "url": "../extensions/legoluigi.js",
+    "revision": "c3d06c865d1ac0b81751774941dd269f"
+  }, {
+    "url": "../extensions/legomario.js",
+    "revision": "b554ed78101e1f1af55e2ec75decdc8f"
+  }, {
+    "url": "../extensions/legopeach.js",
+    "revision": "829d39b80d63e027a32a75792ebbfda9"
+  }, {
+    "url": "../extensions/spikeessential.js",
+    "revision": "df4b39ff83db7ed8862138f0f20d7d88"
+  }, {
     "url": "blocks-only.html",
     "revision": "d80751ce8c6c1cc08b5253f7ad3e6da5"
   }, {
@@ -88,7 +109,7 @@ define(['./workbox-74854057'], (function (workbox) { 'use strict';
     "revision": "b28772d6bef7603f092fb14d88828dc8"
   }, {
     "url": "chunks/src_containers_gui_jsx-src_lib_app-state-hoc_jsx-src_lib_hash-parser-hoc_jsx.c68668c9b1a3ee55415b.js",
-    "revision": null
+    "revision": "0bc6fea3c8ea3a3ad3e5d25f01690a73"
   }, {
     "url": "chunks/src_containers_gui_jsx-src_lib_app-state-hoc_jsx-src_lib_hash-parser-hoc_jsx.c68668c9b1a3ee55415b.js.map",
     "revision": "707118acb2c63ea3b0018b00e8aa9566"
